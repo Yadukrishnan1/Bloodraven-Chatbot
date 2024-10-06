@@ -22,8 +22,7 @@ def main():
         {"context": retriever, "question": RunnablePassthrough()}
         | llm_chain)
 
-    interface = gr.Interface
-    (
+    interface = gr.Interface(
         fn=lambda question: generate_response(question, rag_chain),
         inputs=gr.Textbox(placeholder="Ask your question...", label="Your Question", lines=2),
         outputs=gr.Textbox(label="Bloodraven's Response", lines=5, interactive=False),
