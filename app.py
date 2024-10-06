@@ -11,19 +11,20 @@ For more information on `huggingface_hub` Inference API support, please check th
 """
 client = InferenceClient("HuggingFaceH4/zephyr-7b-beta")
 
-# Load necessary components
-retriever = setup_retriever()
-llm_chain = setup_llm_chain()
-
 
 
 def main():
-    print(retriever)
+    # Load necessary components
+    retriever = setup_retriever()
+    llm_chain = setup_llm_chain()
+    # Set up retrieval-augmented generation chain
+    rag_chain = (
+        {"context": retriever, "question": RunnablePassthrough()}
+        | llm_chain)
 
-    print(llm_chain)
     interface = gr.Interface
     (
-        fn=lambda question: generate_response(question, retriever, llm_chain),
+        fn=lambda question: generate_response(question, rag_chain),
         inputs=gr.Textbox(placeholder="Ask your question...", label="Your Question", lines=2),
         outputs=gr.Textbox(label="Bloodraven's Response", lines=5, interactive=False),
         title="Bloodraven Chatbot",
