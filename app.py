@@ -1,9 +1,9 @@
 import gradio as gr
 
-from model_loader import load_model
-from retriever import setup_retriever
-from llm_chain import setup_llm_chain
-from utils import generate_response
+from src.model_loader import load_model
+from src.retriever import setup_retriever
+from src.llm_chain import setup_llm_chain
+from src.utils import generate_response
 from huggingface_hub import InferenceClient
 
 """
