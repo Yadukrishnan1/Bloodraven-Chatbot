@@ -15,6 +15,10 @@ client = InferenceClient("HuggingFaceH4/zephyr-7b-beta")
 retriever = setup_retriever()
 llm_chain = setup_llm_chain()
 
+print(retriever)
+
+print(llm_chain)
+
 def main():
     interface = gr.Interface
     (
