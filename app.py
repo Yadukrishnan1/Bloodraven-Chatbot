@@ -15,11 +15,12 @@ client = InferenceClient("HuggingFaceH4/zephyr-7b-beta")
 retriever = setup_retriever()
 llm_chain = setup_llm_chain()
 
-print(retriever)
 
-print(llm_chain)
 
 def main():
+    print(retriever)
+
+    print(llm_chain)
     interface = gr.Interface
     (
         fn=lambda question: generate_response(question, retriever, llm_chain),
