@@ -1,4 +1,9 @@
 import gradio as gr
+
+from model_loader import load_model
+from retriever import setup_retriever
+from llm_chain import setup_llm_chain
+from utils import generate_response
 from huggingface_hub import InferenceClient
 
 """
@@ -6,58 +11,60 @@ For more information on `huggingface_hub` Inference API support, please check th
 """
 client = InferenceClient("HuggingFaceH4/zephyr-7b-beta")
 
+# Load necessary components
+retriever = setup_retriever()
+llm_chain = setup_llm_chain()
 
-def respond(
-    message,
-    history: list[tuple[str, str]],
-    system_message,
-    max_tokens,
-    temperature,
-    top_p,
-):
-    messages = [{"role": "system", "content": system_message}]
+def main():
+    interface = gr.Interface
+    (
+        fn=lambda question: generate_response(question, retriever, llm_chain),
+        inputs=gr.Textbox(placeholder="Ask your question...", label="Your Question", lines=2),
+        outputs=gr.Textbox(label="Bloodraven's Response", lines=5, interactive=False),
+        title="Bloodraven Chatbot",
+        description="Ask any question and receive cryptic, prophetic answers from the Bloodraven from A Song of Ice and Fire.",
+        css="""
+            .gradio-container {
+                font-family: 'Arial', sans-serif;  /* Simple, clear font */
+                background-color: #f9f9f9;  /* Light gray background */
+                color: #333333;  /* Dark gray text for contrast */
+            }
+            .input_textbox, .output_textbox {
+                border-radius: 5px;  /* Rounded corners */
+                border: 2px solid #007bff;  /* Bright blue border */
+                background-color: #ffffff;  /* White background for input/output boxes */
+                color: #333333;  /* Dark gray text for visibility */
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+            }
+            .input_textbox:focus, .output_textbox:focus {
+                border-color: #ff4500;  /* Bright orange-red border on focus */
+            }
+            .title {
+                font-size: 36px;  /* Larger title */
+                font-weight: bold;  /* Bold title */
+                text-align: center;  /* Centered title */
+                color: #007bff;  /* Bright blue for title */
+            }
+            .description {
+                font-size: 20px;  /* Larger description font */
+                text-align: center;  /* Centered description */
+                margin-bottom: 20px;  /* Space below description */
+                color: #555555;  /* Medium gray for description */
+            }
+            .footer {
+                text-align: center;  /* Center footer text */
+                margin-top: 20px;  /* Space above footer */
+                color: #888888;  /* Light gray for footer text */
+            }
+        """,
+        examples=[
+            ["How are Daenerys and Jon Snow related?"],
+            ["What is the fate of Bran Stark?"],
+            ["Tell me about the Iron Throne."],
+        ],
+    )
 
-    for val in history:
-        if val[0]:
-            messages.append({"role": "user", "content": val[0]})
-        if val[1]:
-            messages.append({"role": "assistant", "content": val[1]})
-
-    messages.append({"role": "user", "content": message})
-
-    response = ""
-
-    for message in client.chat_completion(
-        messages,
-        max_tokens=max_tokens,
-        stream=True,
-        temperature=temperature,
-        top_p=top_p,
-    ):
-        token = message.choices[0].delta.content
-
-        response += token
-        yield response
-
-"""
-For information on how to customize the ChatInterface, peruse the gradio docs: https://www.gradio.app/docs/chatinterface
-"""
-demo = gr.ChatInterface(
-    respond,
-    additional_inputs=[
-        gr.Textbox(value="You are a friendly Chatbot.", label="System message"),
-        gr.Slider(minimum=1, maximum=2048, value=512, step=1, label="Max new tokens"),
-        gr.Slider(minimum=0.1, maximum=4.0, value=0.7, step=0.1, label="Temperature"),
-        gr.Slider(
-            minimum=0.1,
-            maximum=1.0,
-            value=0.95,
-            step=0.05,
-            label="Top-p (nucleus sampling)",
-        ),
-    ],
-)
-
+    interface.launch()
 
 if __name__ == "__main__":
-    demo.launch()
+    main()
