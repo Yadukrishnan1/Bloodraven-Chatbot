@@ -1,5 +1,4 @@
-def generate_response(question, retriever, llm_chain):
+def generate_response(question, rag_chain):
     """Generates a response using the RAG (retrieval-augmented generation) chain."""
-    rag_chain = {"context": retriever, "question": question}
-    response = llm_chain.invoke(rag_chain)
+    response = rag_chain.invoke(question)
     return response.split('cutresponsefromhereplease')[-1]
