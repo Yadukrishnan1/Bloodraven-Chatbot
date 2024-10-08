@@ -1,5 +1,5 @@
 from transformers import pipeline
-from langchain.llms import HuggingFacePipeline
+from langchain_community.llms import HuggingFacePipeline
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from model_loader import load_model
