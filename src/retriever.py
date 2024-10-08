@@ -2,9 +2,8 @@ import pickle
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 
-DB_PATH = "../data/faiss_index"
-
-METADATA_PATH = "../data/metadata.pkl"
+DB_PATH = "/home/user/app/data/faiss_index"
+METADATA_PATH = "/home/user/app/data/metadata.pkl"
 
 cached_retriever = None
 
