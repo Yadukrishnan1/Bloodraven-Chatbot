@@ -9,4 +9,4 @@ faiss-cpu
 langchain
 langchain-community
 langchain_huggingface
-gradio
+gradio==5.0.1
