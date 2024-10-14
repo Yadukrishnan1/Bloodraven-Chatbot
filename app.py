@@ -68,6 +68,7 @@ def main():
             ["What is the fate of Bran Stark?"],
             ["Tell me about the Iron Throne."],
         ],
+        share=True,
     )
 
     interface.launch()
