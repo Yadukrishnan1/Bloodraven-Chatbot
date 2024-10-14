@@ -4,7 +4,7 @@ from src.model_loader import load_model
 from src.retriever import setup_retriever
 from src.llm_chain import setup_llm_chain
 from src.utils import generate_response
-# from langchain.schema import RunnablePassthrough 
+from langchain_core.runnables import RunnablePassthrough
 from huggingface_hub import InferenceClient
 
 """
