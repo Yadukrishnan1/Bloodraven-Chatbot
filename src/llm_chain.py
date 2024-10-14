@@ -2,6 +2,7 @@ from transformers import pipeline
 from langchain_huggingface import HuggingFacePipeline
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
 from .model_loader import load_model
 
 def setup_llm_chain():
