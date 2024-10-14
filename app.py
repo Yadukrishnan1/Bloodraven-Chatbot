@@ -67,11 +67,10 @@ def main():
             ["How are Daenerys and Jon Snow related?"],
             ["What is the fate of Bran Stark?"],
             ["Tell me about the Iron Throne."],
-        ],
-        share=True,
+        ]
     )
 
-    interface.launch()
+    interface.launch(share=True)
 
 if __name__ == "__main__":
     main()
