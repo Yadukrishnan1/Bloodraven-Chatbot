@@ -15,6 +15,6 @@ def load_model():
             bnb_4bit_quant_type="nf4",
             bnb_4bit_compute_dtype=torch.bfloat16
         )
-        cached_model = AutoModelForCausalLM.from_pretrained(MODEL_NAME) #, quantization_config=bnb_config
+        cached_model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, quantization_config=bnb_config) #
         cached_tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
     return cached_model, cached_tokenizer
